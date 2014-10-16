@@ -208,7 +208,7 @@ class App(object):
         client = http.client.HTTPConnection('localhost', 8080)
         client.connect()
 
-        client.request('GET', '/games/2/board?token={}'.format(self.token))
+        client.request('GET', '/games/1/board?token={}'.format(self.token))
         response = client.getresponse()
 
         while response.status == 200:
@@ -216,7 +216,7 @@ class App(object):
             result = self.get_result(data)
 
             client.request(
-                'POST', '/games/2/board?token={}'.format(self.token),
+                'POST', '/games/1/board?token={}'.format(self.token),
                 json.dumps(result),
             )
 
