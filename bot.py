@@ -177,8 +177,9 @@ class Game(object):
 
 
 class App(object):
-    def __init__(self, token):
+    def __init__(self, token, room_id):
         self.token = token
+        self.room_id = room_id
 
     def get_result(self, data):
         board = data['board']
@@ -208,7 +209,7 @@ class App(object):
         client = http.client.HTTPConnection('localhost', 8080)
         client.connect()
 
-        client.request('GET', '/games/1/board?token={}'.format(self.token))
+        client.request('GET', '/games/{}/board?token={}'.format(self.room_id, self.token))
         response = client.getresponse()
 
         while response.status == 200:
@@ -216,7 +217,7 @@ class App(object):
             result = self.get_result(data)
 
             client.request(
-                'POST', '/games/1/board?token={}'.format(self.token),
+                'POST', '/games/{}/board?token={}'.format(self.room_id, self.token),
                 json.dumps(result),
             )
 
@@ -225,6 +226,7 @@ class App(object):
 
 if __name__ == '__main__':
     token = sys.argv[1]
-    app = App(token)
+    room_id = sys.argv[2]
+    app = App(token, room_id)
     app.start()
 
